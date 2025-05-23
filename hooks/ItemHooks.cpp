@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 - 2024 Eluna Lua Engine <https://elunaluaengine.github.io/>
+ * Copyright (C) 2010 - 2024 Forge Lua Engine <https://forgeluaengine.github.io/>
  * This program is free software licensed under GPL version 3
  * Please see the included DOCS/LICENSE.md for more information
  */
@@ -8,8 +8,8 @@
 #include "HookHelpers.h"
 #include "LuaEngine.h"
 #include "BindingMap.h"
-#include "ElunaIncludes.h"
-#include "ElunaTemplate.h"
+#include "ForgeIncludes.h"
+#include "ForgeTemplate.h"
 
 using namespace Hooks;
 
@@ -23,7 +23,7 @@ using namespace Hooks;
     if (!ItemEventBindings->HasBindingsFor(key))\
         return RETVAL;
 
-void Eluna::OnDummyEffect(WorldObject* pCaster, uint32 spellId, SpellEffIndex effIndex, Item* pTarget)
+void Forge::OnDummyEffect(WorldObject* pCaster, uint32 spellId, SpellEffIndex effIndex, Item* pTarget)
 {
     START_HOOK(ITEM_EVENT_ON_DUMMY_EFFECT, pTarget->GetEntry());
     HookPush(pCaster);
@@ -33,7 +33,7 @@ void Eluna::OnDummyEffect(WorldObject* pCaster, uint32 spellId, SpellEffIndex ef
     CallAllFunctions(ItemEventBindings, key);
 }
 
-bool Eluna::OnQuestAccept(Player* pPlayer, Item* pItem, Quest const* pQuest)
+bool Forge::OnQuestAccept(Player* pPlayer, Item* pItem, Quest const* pQuest)
 {
     START_HOOK_WITH_RETVAL(ITEM_EVENT_ON_QUEST_ACCEPT, pItem->GetEntry(), false);
     HookPush(pPlayer);
@@ -42,7 +42,7 @@ bool Eluna::OnQuestAccept(Player* pPlayer, Item* pItem, Quest const* pQuest)
     return CallAllFunctionsBool(ItemEventBindings, key);
 }
 
-bool Eluna::OnUse(Player* pPlayer, Item* pItem, SpellCastTargets const& targets)
+bool Forge::OnUse(Player* pPlayer, Item* pItem, SpellCastTargets const& targets)
 {
     ObjectGuid guid = pItem->GET_GUID();
     bool castSpell = true;
@@ -67,12 +67,12 @@ bool Eluna::OnUse(Player* pPlayer, Item* pItem, SpellCastTargets const& targets)
     return false;
 }
 
-bool Eluna::OnItemUse(Player* pPlayer, Item* pItem, SpellCastTargets const& targets)
+bool Forge::OnItemUse(Player* pPlayer, Item* pItem, SpellCastTargets const& targets)
 {
     START_HOOK_WITH_RETVAL(ITEM_EVENT_ON_USE, pItem->GetEntry(), true);
     HookPush(pPlayer);
     HookPush(pItem);
-#if defined ELUNA_TRINITY
+#if defined FORGE_TRINITY
     if (GameObject* target = targets.GetGOTarget())
         HookPush(target);
     else if (Item* target = targets.GetItemTarget())
@@ -101,7 +101,7 @@ bool Eluna::OnItemUse(Player* pPlayer, Item* pItem, SpellCastTargets const& targ
     return CallAllFunctionsBool(ItemEventBindings, key, true);
 }
 
-bool Eluna::OnExpire(Player* pPlayer, ItemTemplate const* pProto)
+bool Forge::OnExpire(Player* pPlayer, ItemTemplate const* pProto)
 {
     START_HOOK_WITH_RETVAL(ITEM_EVENT_ON_EXPIRE, pProto->ItemId, false);
     HookPush(pPlayer);
@@ -109,7 +109,7 @@ bool Eluna::OnExpire(Player* pPlayer, ItemTemplate const* pProto)
     return CallAllFunctionsBool(ItemEventBindings, key);
 }
 
-bool Eluna::OnRemove(Player* pPlayer, Item* pItem)
+bool Forge::OnRemove(Player* pPlayer, Item* pItem)
 {
     START_HOOK_WITH_RETVAL(ITEM_EVENT_ON_REMOVE, pItem->GetEntry(), false);
     HookPush(pPlayer);
@@ -117,7 +117,7 @@ bool Eluna::OnRemove(Player* pPlayer, Item* pItem)
     return CallAllFunctionsBool(ItemEventBindings, key);
 }
 
-void Eluna::OnAdd(Player* pPlayer, Item* pItem)
+void Forge::OnAdd(Player* pPlayer, Item* pItem)
 {
     START_HOOK(ITEM_EVENT_ON_ADD, pItem->GetEntry());
     HookPush(pPlayer);
@@ -125,7 +125,7 @@ void Eluna::OnAdd(Player* pPlayer, Item* pItem)
     CallAllFunctions(ItemEventBindings, key);
 }
 
-void Eluna::OnItemEquip(Player* pPlayer, Item* pItem, uint8 slot)
+void Forge::OnItemEquip(Player* pPlayer, Item* pItem, uint8 slot)
 {
     START_HOOK(ITEM_EVENT_ON_EQUIP, pItem->GetEntry());
     HookPush(pPlayer);
@@ -134,7 +134,7 @@ void Eluna::OnItemEquip(Player* pPlayer, Item* pItem, uint8 slot)
     CallAllFunctions(ItemEventBindings, key);
 }
 
-void Eluna::OnItemUnEquip(Player* pPlayer, Item* pItem, uint8 slot)
+void Forge::OnItemUnEquip(Player* pPlayer, Item* pItem, uint8 slot)
 {
     START_HOOK(ITEM_EVENT_ON_UNEQUIP, pItem->GetEntry());
     HookPush(pPlayer);

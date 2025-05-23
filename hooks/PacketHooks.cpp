@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 - 2024 Eluna Lua Engine <https://elunaluaengine.github.io/>
+ * Copyright (C) 2010 - 2024 Forge Lua Engine <https://forgeluaengine.github.io/>
  * This program is free software licensed under GPL version 3
  * Please see the included DOCS/LICENSE.md for more information
  */
@@ -8,8 +8,8 @@
 #include "HookHelpers.h"
 #include "LuaEngine.h"
 #include "BindingMap.h"
-#include "ElunaIncludes.h"
-#include "ElunaTemplate.h"
+#include "ForgeIncludes.h"
+#include "ForgeTemplate.h"
 
 using namespace Hooks;
 
@@ -23,7 +23,7 @@ using namespace Hooks;
     if (!PacketEventBindings->HasBindingsFor(key))\
         return;
 
-bool Eluna::OnPacketSend(WorldSession* session, const WorldPacket& packet)
+bool Forge::OnPacketSend(WorldSession* session, const WorldPacket& packet)
 {
     bool result = true;
     Player* player = NULL;
@@ -33,7 +33,7 @@ bool Eluna::OnPacketSend(WorldSession* session, const WorldPacket& packet)
     OnPacketSendOne(player, packet, result);
     return result;
 }
-void Eluna::OnPacketSendAny(Player* player, const WorldPacket& packet, bool& result)
+void Forge::OnPacketSendAny(Player* player, const WorldPacket& packet, bool& result)
 {
     START_HOOK_SERVER(SERVER_EVENT_ON_PACKET_SEND);
     HookPush(&packet); // pushing pointer to local is fine, a copy of value will be stored, not pointer itself
@@ -53,7 +53,7 @@ void Eluna::OnPacketSendAny(Player* player, const WorldPacket& packet, bool& res
     CleanUpStack(2);
 }
 
-void Eluna::OnPacketSendOne(Player* player, const WorldPacket& packet, bool& result)
+void Forge::OnPacketSendOne(Player* player, const WorldPacket& packet, bool& result)
 {
     START_HOOK_PACKET(PACKET_EVENT_ON_PACKET_SEND, packet.GetOpcode());
     HookPush(&packet); // pushing pointer to local is fine, a copy of value will be stored, not pointer itself
@@ -73,7 +73,7 @@ void Eluna::OnPacketSendOne(Player* player, const WorldPacket& packet, bool& res
     CleanUpStack(2);
 }
 
-bool Eluna::OnPacketReceive(WorldSession* session, WorldPacket& packet)
+bool Forge::OnPacketReceive(WorldSession* session, WorldPacket& packet)
 {
     bool result = true;
     Player* player = NULL;
@@ -84,7 +84,7 @@ bool Eluna::OnPacketReceive(WorldSession* session, WorldPacket& packet)
     return result;
 }
 
-void Eluna::OnPacketReceiveAny(Player* player, WorldPacket& packet, bool& result)
+void Forge::OnPacketReceiveAny(Player* player, WorldPacket& packet, bool& result)
 {
     START_HOOK_SERVER(SERVER_EVENT_ON_PACKET_RECEIVE);
     HookPush(&packet); // pushing pointer to local is fine, a copy of value will be stored, not pointer itself
@@ -101,7 +101,7 @@ void Eluna::OnPacketReceiveAny(Player* player, WorldPacket& packet, bool& result
         if (lua_isuserdata(L, r + 1))
             if (WorldPacket* data = CHECKOBJ<WorldPacket>(r + 1, false))
             {
-#if defined ELUNA_TRINITY || defined ELUNA_VMANGOS
+#if defined FORGE_TRINITY || defined FORGE_VMANGOS
                 packet = std::move(*data);
 #else
                 packet = *data;
@@ -114,7 +114,7 @@ void Eluna::OnPacketReceiveAny(Player* player, WorldPacket& packet, bool& result
     CleanUpStack(2);
 }
 
-void Eluna::OnPacketReceiveOne(Player* player, WorldPacket& packet, bool& result)
+void Forge::OnPacketReceiveOne(Player* player, WorldPacket& packet, bool& result)
 {
     START_HOOK_PACKET(PACKET_EVENT_ON_PACKET_RECEIVE, packet.GetOpcode());
     HookPush(&packet); // pushing pointer to local is fine, a copy of value will be stored, not pointer itself
@@ -131,7 +131,7 @@ void Eluna::OnPacketReceiveOne(Player* player, WorldPacket& packet, bool& result
         if (lua_isuserdata(L, r + 1))
             if (WorldPacket* data = CHECKOBJ<WorldPacket>(r + 1, false))
             {
-#if defined ELUNA_TRINITY || defined ELUNA_VMANGOS
+#if defined FORGE_TRINITY || defined FORGE_VMANGOS
                 packet = std::move(*data);
 #else
                 packet = *data;

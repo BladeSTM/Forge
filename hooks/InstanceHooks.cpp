@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 - 2024 Eluna Lua Engine <https://elunaluaengine.github.io/>
+ * Copyright (C) 2010 - 2024 Forge Lua Engine <https://forgeluaengine.github.io/>
  * This program is free software licensed under GPL version 3
  * Please see the included DOCS/LICENSE.md for more information
  */
@@ -8,9 +8,9 @@
 #include "HookHelpers.h"
 #include "LuaEngine.h"
 #include "BindingMap.h"
-#include "ElunaIncludes.h"
-#include "ElunaTemplate.h"
-#include "ElunaInstanceAI.h"
+#include "ForgeIncludes.h"
+#include "ForgeTemplate.h"
+#include "ForgeInstanceAI.h"
 
 using namespace Hooks;
 
@@ -30,47 +30,47 @@ using namespace Hooks;
     PushInstanceData(AI);\
     HookPush<Map>(AI->instance)
 
-void Eluna::OnInitialize(ElunaInstanceAI* ai)
+void Forge::OnInitialize(ForgeInstanceAI* ai)
 {
     START_HOOK(INSTANCE_EVENT_ON_INITIALIZE, ai);
     CallAllFunctions(MapEventBindings, InstanceEventBindings, mapKey, instanceKey);
 }
 
-void Eluna::OnLoad(ElunaInstanceAI* ai)
+void Forge::OnLoad(ForgeInstanceAI* ai)
 {
     START_HOOK(INSTANCE_EVENT_ON_LOAD, ai);
     CallAllFunctions(MapEventBindings, InstanceEventBindings, mapKey, instanceKey);
 }
 
-void Eluna::OnUpdateInstance(ElunaInstanceAI* ai, uint32 diff)
+void Forge::OnUpdateInstance(ForgeInstanceAI* ai, uint32 diff)
 {
     START_HOOK(INSTANCE_EVENT_ON_UPDATE, ai);
     HookPush(diff);
     CallAllFunctions(MapEventBindings, InstanceEventBindings, mapKey, instanceKey);
 }
 
-void Eluna::OnPlayerEnterInstance(ElunaInstanceAI* ai, Player* player)
+void Forge::OnPlayerEnterInstance(ForgeInstanceAI* ai, Player* player)
 {
     START_HOOK(INSTANCE_EVENT_ON_PLAYER_ENTER, ai);
     HookPush(player);
     CallAllFunctions(MapEventBindings, InstanceEventBindings, mapKey, instanceKey);
 }
 
-void Eluna::OnCreatureCreate(ElunaInstanceAI* ai, Creature* creature)
+void Forge::OnCreatureCreate(ForgeInstanceAI* ai, Creature* creature)
 {
     START_HOOK(INSTANCE_EVENT_ON_CREATURE_CREATE, ai);
     HookPush(creature);
     CallAllFunctions(MapEventBindings, InstanceEventBindings, mapKey, instanceKey);
 }
 
-void Eluna::OnGameObjectCreate(ElunaInstanceAI* ai, GameObject* gameobject)
+void Forge::OnGameObjectCreate(ForgeInstanceAI* ai, GameObject* gameobject)
 {
     START_HOOK(INSTANCE_EVENT_ON_GAMEOBJECT_CREATE, ai);
     HookPush(gameobject);
     CallAllFunctions(MapEventBindings, InstanceEventBindings, mapKey, instanceKey);
 }
 
-bool Eluna::OnCheckEncounterInProgress(ElunaInstanceAI* ai)
+bool Forge::OnCheckEncounterInProgress(ForgeInstanceAI* ai)
 {
     START_HOOK_WITH_RETVAL(INSTANCE_EVENT_ON_CHECK_ENCOUNTER_IN_PROGRESS, ai, false);
     return CallAllFunctionsBool(MapEventBindings, InstanceEventBindings, mapKey, instanceKey);
